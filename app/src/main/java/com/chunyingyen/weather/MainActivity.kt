@@ -1,38 +1,41 @@
 package com.chunyingyen.weather
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.chunyingyen.weather.DB.Converter36TempData
+import com.chunyingyen.weather.DB.Hour36Entity
+import com.chunyingyen.weather.DB.WeatherDatabase
 import com.chunyingyen.weather.data.Hours36WeatherData
 import com.chunyingyen.weather.http.Api
-import com.viwave.collaborationproject.http.HttpManager
 import com.viwave.collaborationproject.http.IAPIResult
-import com.viwave.collaborationproject.http.IHttp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
 
+    private val maxElement = "MaxT"
+    private val minElement = "MinT"
+
+    companion object{
+        enum class ELEMENT{MAX, MIN}
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
     }
 
@@ -55,7 +58,28 @@ class MainActivity : AppCompatActivity() {
         Api.loadData( getString(R.string.memeber_id), getString(R.string.token),
             object : IAPIResult<Hours36WeatherData>{
                 override fun onSuccess(res: Response<Hours36WeatherData>) {
-                    
+                    res.body()?.let { data ->
+                        data.cwbopendata.dataset.location.forEach { locationData ->
+
+                            GlobalScope.launch(Dispatchers.IO) {
+                                val maxTempData =
+                                    Converter36TempData.getTempDataStr(locationData.weatherElement.find { it.elementName == maxElement }?.time)
+                                val minTempData =
+                                    Converter36TempData.getTempDataStr(locationData.weatherElement.find { it.elementName == minElement }?.time)
+                                Log.d("city", "${locationData.locationName}")
+                                Log.d("minData", minTempData)
+                                Log.d("maxData", maxTempData)
+                                WeatherDatabase(applicationContext).getHours36Dao().insert(
+                                    Hour36Entity(
+                                        locationData.locationName,
+                                        maxTempData,
+                                        minTempData
+                                    )
+                                )
+                            }
+                        }
+
+                    }
                 }
 
                 override fun onFailed(msg: String?) {
