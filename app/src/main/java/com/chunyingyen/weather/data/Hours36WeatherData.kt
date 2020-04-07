@@ -39,5 +39,5 @@ data class TimeData(
 
 data class ParameterData (
     @SerializedName("parameterName") val parameterName: String,
-    @SerializedName("parameterValue") val parameterValue: String
+    @SerializedName("parameterUnit") val parameterUnit: String
 )
