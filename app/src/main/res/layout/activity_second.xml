@@ -1,7 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/block_a"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimary"
+        android:text="A"
+        android:textColor="@android:color/white"
+        android:textSize="48dp"
+        android:gravity="center"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent=".25"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/block_a"
+        app:layout_constraintBottom_toTopOf="@id/block_b"
+        app:layout_constraintStart_toEndOf="@id/block_a"
+        app:layout_constraintEnd_toStartOf="@id/block_b"
+        />
+
+    <TextView
+        android:id="@+id/block_b"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimary"
+        android:text="B"
+        android:textColor="@android:color/white"
+        android:textSize="48dp"
+        android:gravity="center"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent=".25"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

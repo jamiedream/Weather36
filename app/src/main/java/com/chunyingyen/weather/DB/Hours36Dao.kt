@@ -15,6 +15,9 @@ interface Hours36Dao {
     @Query("SELECT minData FROM $tableHours36 WHERE city = :city")
     fun getMinDataStr(city: String): String
 
+    @Query("SELECT minData FROM $tableHours36")
+    fun getMinDataStr(): List<String>
+
     @Query("UPDATE $tableHours36 SET minData = :new WHERE city = :city")
     fun updateMinData(city: String, new: String)
 

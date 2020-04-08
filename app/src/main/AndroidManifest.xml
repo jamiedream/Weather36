@@ -21,6 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SecondActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|locale|layoutDirection"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
