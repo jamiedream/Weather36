@@ -1,6 +1,7 @@
 package com.chunyingyen.weather.DB
 
 import com.chunyingyen.weather.data.Hours36TemperatureData
+import com.chunyingyen.weather.data.Hours36key.CITY
 import com.chunyingyen.weather.data.Hours36key.END_TIME
 import com.chunyingyen.weather.data.Hours36key.NAME
 import com.chunyingyen.weather.data.Hours36key.START_TIME
@@ -14,11 +15,12 @@ object Converter36TempData {
 
     private val TAG = "Converter36TempData"
 
-    fun getTempDataStr(timeArray: MutableList<TimeData>?): String{
+    fun getTempDataStr(timeArray: MutableList<TimeData>?, city: String): String{
         val dataList = mutableListOf<Hours36TemperatureData>()
         timeArray?.forEach {
             dataList.add(
                 Hours36TemperatureData(
+                    city,
                     it.startTime,
                     it.endTime,
                     it.parameter.parameterName,
@@ -34,6 +36,7 @@ object Converter36TempData {
         list.forEach {
             array.add(
                 JsonObject().apply {
+                    this.addProperty(CITY, it.city)
                     this.addProperty(START_TIME, it.startTime)
                     this.addProperty(END_TIME, it.endTime)
                     this.addProperty(NAME, it.name)
@@ -48,12 +51,14 @@ object Converter36TempData {
         val dataArray = JsonArray()
         val array = JSONArray(rawData)
         for(num in 0 until array.length()){
+            val city = array.getJSONObject(num).get(CITY).toString()
             val startTime = array.getJSONObject(num).get(START_TIME).toString()
             val endTime = array.getJSONObject(num).get(END_TIME).toString()
             val name = array.getJSONObject(num).get(NAME).toString()
             val unit = array.getJSONObject(num).get(UNIT).toString()
             dataArray.add(
                 JsonObject().apply {
+                    this.addProperty(CITY, city)
                     this.addProperty(START_TIME, startTime)
                     this.addProperty(END_TIME, endTime)
                     this.addProperty(NAME, name)
@@ -73,6 +78,7 @@ object Converter36TempData {
             json.asJsonArray.forEach {data ->
                 list.add(
                     Hours36TemperatureData(
+                        data.asJsonObject.get(CITY).asString,
                         data.asJsonObject.get(START_TIME).asString,
                         data.asJsonObject.get(END_TIME).asString,
                         data.asJsonObject.get(NAME).asString,

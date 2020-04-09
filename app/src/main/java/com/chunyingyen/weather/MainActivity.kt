@@ -103,9 +103,9 @@ class MainActivity : AppCompatActivity(), IITemClickListener {
 
                             GlobalScope.launch(Dispatchers.IO) {
                                 val maxTempData =
-                                    Converter36TempData.getTempDataStr(locationData.weatherElement.find { it.elementName == maxElement }?.time)
+                                    Converter36TempData.getTempDataStr(locationData.weatherElement.find { it.elementName == maxElement }?.time, locationData.locationName)
                                 val minTempData =
-                                    Converter36TempData.getTempDataStr(locationData.weatherElement.find { it.elementName == minElement }?.time)
+                                    Converter36TempData.getTempDataStr(locationData.weatherElement.find { it.elementName == minElement }?.time, locationData.locationName)
 //                                Log.d("city", "${locationData.locationName}")
 //                                Log.d("minData", minTempData)
 //                                Log.d("maxData", maxTempData)

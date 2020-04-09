@@ -31,7 +31,8 @@ class Hours36ListAdapter(private val listData: MutableList<Hours36TemperatureDat
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.txt.text =
             String.format(
-                "%s\n%s\n%s\n%s",
+                "%s\n%s\n%s\n%s\n%s",
+                listData[position].city,
                 listData[position].startTime,
                 listData[position].endTime,
                 listData[position].name,
